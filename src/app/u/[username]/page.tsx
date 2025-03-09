@@ -59,32 +59,41 @@ export default function SendMessage() {
   };
 
   const [isLoading, setIsLoading] = useState(false);
-
   const onSubmit = async (data: z.infer<typeof messageSchema>) => {
     setIsLoading(true);
     try {
-      const response = await axios.post<ApiResponse>('/api/send-message', {
-        ...data,
-        username,
+      // Send feedback to analysis API
+      const analysisResponse = await axios.post('http://127.0.0.1:5000/analyze-feedback', {
+        message: data.content,
       });
 
+      const sentiment = analysisResponse.data.sentiment;
+
+      // Save feedback with sentiment analysis
+      const response = await axios.post('/api/send-message', {
+        ...data,
+        username,
+        sentiment,
+      });
       toast({
         title: response.data.message,
+        description: `Sentiment: ${sentiment}`,
         variant: 'default',
       });
+
       form.reset({ ...form.getValues(), content: '' });
     } catch (error) {
-      const axiosError = error as AxiosError<ApiResponse>;
+      console.error(error);
       toast({
         title: 'Error',
-        description:
-          axiosError.response?.data.message ?? 'Failed to sent message',
+        description: 'Failed to send message',
         variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
     }
   };
+
 
   const fetchSuggestedMessages = async () => {
     try {

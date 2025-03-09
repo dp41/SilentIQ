@@ -5,8 +5,8 @@ import { Message } from "@/model/User";
 export const POST = async (request: Request) => {
   await dbConnect();
 
-  const { username, content } = await request.json();
-
+  const { username, content, sentiment } = await request.json();
+  console.log(content)
   try {
     const user = await UserModel.findOne({ username });
 
@@ -26,10 +26,9 @@ export const POST = async (request: Request) => {
       });
     }
 
-    const newMessage = {content, createdAt: new Date()}
+    const newMessage = {content: content, sentiment: sentiment, createdAt: new Date()}
 
     user.message.push(newMessage as Message);
-    
     await user.save();
 
     return Response.json({

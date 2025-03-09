@@ -3,6 +3,7 @@ import mongoose, {Schema, Document} from "mongoose";
 //custom datatype for Message
 export interface Message extends Document {
     content: string;
+    sentiment: string;
     createdAt: Date;
 }
 
@@ -10,6 +11,9 @@ const MessageSchema: Schema<Message> = new Schema({
     content : {
         type: String,
         required: true
+    },
+    sentiment: {
+        type: String,
     },
     createdAt: {
         type: Date,
