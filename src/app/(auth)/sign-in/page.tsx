@@ -68,9 +68,9 @@ const Page = () => {
       toast({
         title: "Login Successful",
         description: "Welcome to SilentIQ",
-        variant: "destructive",
+        variant: "default",
       });
-      router.replace('/dashboard');
+      router.push('/dashboard');
       setIsSubmit(false);
     }
   };
