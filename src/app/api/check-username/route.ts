@@ -6,7 +6,7 @@ import { usernameValidation } from "@/schemas/signUpSchema";
 const UsernameQuerySchema = z.object({
   username: usernameValidation,
 });
-
+export const revalidate = 0;
 export async function GET(request: Request) {
   await dbConnect();
 
