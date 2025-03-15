@@ -62,7 +62,7 @@ def translate_to_english(text, src_lang):
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/analyze-feedback", methods=["POST"])
+@app.route("/api/analyze-feedback", methods=["POST"])
 def analyze():
     data = request.json
     text = data.get("message", "").strip()
