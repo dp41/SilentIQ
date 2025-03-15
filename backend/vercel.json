@@ -4,6 +4,6 @@
     { "src": "backend/api.py", "use": "@vercel/python" }
   ],
   "routes": [
-    { "src": "/api/analyze-feedback", "dest": "backend/api.py" }
+    { "src": "/api/analyze-feedback", "dest": "backend/api.handler" }
   ]
 }
