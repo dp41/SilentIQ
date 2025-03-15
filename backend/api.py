@@ -88,8 +88,8 @@ def analyze():
         "language_detected": language,
     })
 
-# if __name__ == "__main__":
-#     app.run(debug=True)
+if __name__ == "__main__":
+    app.run(debug=True)
 # Vercel requires this
 def handler(event, context):
     return app(event, context)
