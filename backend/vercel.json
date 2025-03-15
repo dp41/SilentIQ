@@ -1,11 +1,11 @@
 {
   "version": 2,
   "builds": [
-    { "src": "api.py", "use": "@vercel/python" }
+    { "src": "backend/api.py", "use": "@vercel/python" }
   ],
   "routes": [
-    { "src": "/api/.*", "dest": "api.py" }
-  ],
+    { "src": "/api/analyze-feedback", "dest": "backend/api.py" }
+  ]
   "regions": ["bom1"]
 
 }

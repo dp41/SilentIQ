@@ -63,7 +63,7 @@ export default function SendMessage() {
     setIsLoading(true);
     try {
       // Send feedback to analysis API
-      const analysisResponse = await axios.post('silent-iq-divya-patels-projects-37f50ff1.vercel.app/api/analyze-feedback', {
+      const analysisResponse = await axios.post('https://silent-iq.vercel.app/api/analyze-feedback', {
         message: data.content,
       });
 
