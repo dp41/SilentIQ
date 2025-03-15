@@ -64,6 +64,10 @@ export default function SendMessage() {
     try {
       // Send feedback to analysis API
       const analysisResponse = await axios.post('https://silent-iq.vercel.app/api/analyze-feedback', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         message: data.content,
       });
 
