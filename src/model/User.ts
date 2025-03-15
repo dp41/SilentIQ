@@ -4,6 +4,9 @@ import mongoose, {Schema, Document} from "mongoose";
 export interface Message extends Document {
     content: string;
     sentiment: string;
+    emotion: string;
+    language: string;
+    translated_text: string;
     createdAt: Date;
 }
 
@@ -15,11 +18,20 @@ const MessageSchema: Schema<Message> = new Schema({
     sentiment: {
         type: String,
     },
+    emotion: {
+        type: String,
+    },
+    language:{
+        type: String,
+    },
+    translated_text: {
+        type: String,
+    },
     createdAt: {
-        type: Date,
-        required: true,
-        default: Date.now
-    }
+            type: Date,
+            required: true,
+            default: Date.now
+        }
 })
 
 

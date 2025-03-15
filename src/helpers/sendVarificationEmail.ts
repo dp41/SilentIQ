@@ -1,5 +1,5 @@
 import {resend} from '@/lib/resend';
-import varificationEmail from '../../emails/varificationEmail'
+import verificationEmail from '../../emails/verificationEmail'
 import { ApiResponse } from '@/types/ApiResponse';
 
 export const sendVerificationEmail = async (
@@ -11,15 +11,15 @@ export const sendVerificationEmail = async (
             await resend.emails.send({
                 from: 'onboarding@resend.dev',
                 to: email,
-                subject: 'Honest Echoes | Varification Code',
-                react: varificationEmail({username, otp: verifyCode}),
+                subject: 'SilentIQ | Verification Code',
+                react: verificationEmail({username, otp: verifyCode}),
               });
               
-            return {success: true, message: "Varification email send successfully"}
+            return {success: true, message: "Verification email send successfully"}
 
         } catch (error) {
-            console.error("Error sending Varification email ", error);
+            console.error("Error sending Verification email ", error);
             
-            return {success: false, message: "Error sending Varification email"}
+            return {success: false, message: "Error sending Verification email"}
         }
 }

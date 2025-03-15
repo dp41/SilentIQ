@@ -1,0 +1,7 @@
+flask
+flask-cors
+nltk
+langid
+deep-translator
+better-profanity
+gunicorn

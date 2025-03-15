@@ -28,7 +28,7 @@ type MessageCardProps = {
 export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
   const { toast } = useToast();
 
-  const handleDeleteConfirm = async () => {
+  const handleDeleteConfirm = async (id: unknown) => {
     try {
       const response = await axios.delete<ApiResponse>(
         `/api/delete-message/${message._id}`
@@ -50,20 +50,24 @@ export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
   };
 
   return (
-      <Card className="border border-gray-300 rounded-lg shadow-md p-4">
+      <Card className="border border-gray-300 rounded-lg shadow-md p-4 w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
         <CardHeader>
-          <div className="flex justify-between items-center">
-            <div>
-              <CardTitle className="text-lg font-semibold">{message.content}</CardTitle>
-              <CardContent className="text-sm text-gray-600 mt-1">
-                Sentiment: <span className="font-medium">{message.sentiment}</span>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+            <div className="w-full">
+              <CardTitle className="text-base sm:text-lg font-semibold break-words">
+                {message.content}
+              </CardTitle>
+              <CardContent className="text-xs sm:text-sm text-gray-600 mt-1">
+                Sentiment: <span className="font-medium">{message.sentiment}</span> |
+                Emotion: <span className="font-medium">{message.emotion}</span> |
+                Language: <span className="font-medium">{message.language}</span>
               </CardContent>
             </div>
 
             {/* Delete Button on the Right Side */}
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive" size="icon">
+                <Button variant="destructive" size="icon" className="mt-2 sm:mt-0">
                   <X className="w-5 h-5" />
                 </Button>
               </AlertDialogTrigger>
@@ -76,7 +80,9 @@ export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleDeleteConfirm}>Delete</AlertDialogAction>
+                  <AlertDialogAction onClick={() => handleDeleteConfirm(message._id)}>
+                    Delete
+                  </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
