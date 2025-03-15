@@ -10,6 +10,9 @@ from better_profanity import profanity
 nltk.download("vader_lexicon")
 sia = SentimentIntensityAnalyzer()
 
+app = Flask(__name__)
+CORS(app)
+
 # Expanded Emotion Mapping
 emotion_keywords = {
     "joy": ["happy", "joyful", "excited", "glad", "wonderful", "pleased", "delighted", "cheerful"],
@@ -85,5 +88,8 @@ def analyze():
         "language_detected": language,
     })
 
-if __name__ == "__main__":
-    app.run(debug=True)
+# if __name__ == "__main__":
+#     app.run(debug=True)
+# Vercel requires this
+def handler(event, context):
+    return app(event, context)
