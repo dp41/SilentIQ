@@ -5,13 +5,14 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from better_profanity import profanity
+import os
 
 # Download necessary NLTK data
 nltk.download("vader_lexicon")
 sia = SentimentIntensityAnalyzer()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": ["https://silent-iq.vercel.app"]}})
 
 # Expanded Emotion Mapping
 emotion_keywords = {
@@ -88,8 +89,11 @@ def analyze():
         "language_detected": language,
     })
 
+
 if __name__ == "__main__":
-    app.run(debug=True)
-# Vercel requires this
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
+
+# Vercel handler function
 def handler(event, context):
     return app(event, context)

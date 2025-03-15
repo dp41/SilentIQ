@@ -63,13 +63,15 @@ export default function SendMessage() {
     setIsLoading(true);
     try {
       // Send feedback to analysis API
-      const analysisResponse = await axios.post('https://silent-iq.vercel.app/analyze-feedback', {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        message: data.content,
-      });
+      const analysisResponse = await axios.post(
+          "https://silent-iq.vercel.app/api/analyze-feedback",
+          {
+            message: data.content, // Pass JSON payload correctly
+          },
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+      );
 
       const sentimentData = analysisResponse.data;
       // Save feedback with sentiment analysis
