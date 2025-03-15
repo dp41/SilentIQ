@@ -20,7 +20,6 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/components/ui/use-toast';
 import * as z from 'zod';
-import { ApiResponse } from '@/types/ApiResponse';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { messageSchema } from '@/schemas/messageSchema';
@@ -66,7 +65,10 @@ export default function SendMessage() {
       const analysisResponse = await axios.post(
           "https://silent-iq.vercel.app/api/analyze-feedback",
           { message: data.content },
-          { headers: { "Content-Type": "application/json" } }
+          {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true
+          }
       );
 
 
