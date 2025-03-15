@@ -6,13 +6,18 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from better_profanity import profanity
 import os
+from http import HTTPStatus
 
 # Download necessary NLTK data
-nltk.download("vader_lexicon")
-sia = SentimentIntensityAnalyzer()
+try:
+    nltk.download("vader_lexicon", quiet=True)
+    sia = SentimentIntensityAnalyzer()
+except Exception as e:
+    print(f"NLTK initialization error: {e}")
 
+# Create Flask app once
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": ["https://silent-iq.vercel.app"]}})
+CORS(app)
 
 # Expanded Emotion Mapping
 emotion_keywords = {
@@ -59,41 +64,39 @@ def translate_to_english(text, src_lang):
     except Exception:
         return text  # If translation fails, return original text
 
-app = Flask(__name__)
-CORS(app)
-
 @app.route("/api/analyze-feedback", methods=["POST"])
 def analyze():
-    data = request.json
-    text = data.get("message", "").strip()
+    try:
+        data = request.json
+        if not data:
+            return jsonify({"error": "Invalid JSON payload"}), HTTPStatus.BAD_REQUEST
 
-    if not text:
-        return jsonify({"error": "No text provided"}), 400
+        text = data.get("message", "").strip()
 
-    if profanity.contains_profanity(text):
-        return jsonify({"error": "Profanity detected. Please provide clean feedback."}), 400
+        if not text:
+            return jsonify({"error": "No text provided"}), HTTPStatus.BAD_REQUEST
 
-    language = detect_language(text)
-    translated_text = translate_to_english(text, language)
+        if profanity.contains_profanity(text):
+            return jsonify({"error": "Profanity detected. Please provide clean feedback."}), HTTPStatus.BAD_REQUEST
 
-    score = sia.polarity_scores(translated_text)
-    sentiment = categorize_sentiment(score["compound"])
-    emotion = detect_emotion(translated_text)
+        language = detect_language(text)
+        translated_text = translate_to_english(text, language)
 
+        score = sia.polarity_scores(translated_text)
+        sentiment = categorize_sentiment(score["compound"])
+        emotion = detect_emotion(translated_text)
 
-    return jsonify({
-        "original_text": text,
-        "translated_text": translated_text,
-        "sentiment": sentiment,
-        "emotion": emotion,
-        "language_detected": language,
-    })
+        return jsonify({
+            "original_text": text,
+            "translated_text": translated_text,
+            "sentiment": sentiment,
+            "emotion": emotion,
+            "language_detected": language,
+        })
+    except Exception as e:
+        return jsonify({"error": f"Server error: {str(e)}"}), HTTPStatus.INTERNAL_SERVER_ERROR
 
-
+# For local development
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-
-# Vercel handler function
-def handler(event, context):
-    return app(event, context)

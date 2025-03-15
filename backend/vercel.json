@@ -1,9 +1,15 @@
 {
   "version": 2,
   "builds": [
-    { "src": "backend/api.py", "use": "@vercel/python" }
+    {
+      "src": "backend/api.py",
+      "use": "@vercel/python"
+    }
   ],
   "routes": [
-    { "src": "/api/analyze-feedback", "dest": "backend/api.handler" }
+    {
+      "src": "/(.*)",
+      "dest": "backend/api.py"
+    }
   ]
 }
