@@ -81,7 +81,7 @@ export default function SendMessage() {
       });
       toast({
         title: response.data.message,
-        description: `Sentiment: ${sentimentData.sentiment}`,
+        description: `Sentiment: ${sentimentData.sentiment} | Emotion: ${sentimentData.emotion}`,
         variant: 'default',
       });
 
