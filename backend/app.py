@@ -17,7 +17,7 @@ except Exception as e:
 
 # Create Flask app once
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["https://silent-iq.vercel.app"], supports_credentials=True)
 
 # Expanded Emotion Mapping
 emotion_keywords = {
